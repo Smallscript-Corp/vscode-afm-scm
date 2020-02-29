@@ -7,7 +7,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { Uri, EventEmitter, Event, Disposable, window, workspace, SourceControlResourceGroup, SourceControl, WorkspaceFoldersChangeEvent, TextEditor, QuickPickItem } from "vscode";
-import { Fossil, FossilErrorCodes } from "./fossilBase";
+import { Afm, AfmErrorCodes } from "./afmBase";
 import { anyEvent, filterEvent, dispose, } from "./util";
 import { memoize, debounce, sequentialize } from "./decorators";
 import * as path from 'path';
@@ -70,14 +70,14 @@ export class Model implements Disposable {
     private openRepositories: OpenRepository[] = [];
     get repositories(): Repository[] { return this.openRepositories.map(r => r.repository); }
 
-    private possibleHgRepositoryPaths = new Set<string>();
+    private possibleAfmRepositoryPaths = new Set<string>();
 
     private enabled = false;
     private configurationChangeDisposable: Disposable;
     private disposables: Disposable[] = [];
 
     constructor(
-        private _hg: Fossil
+        private _afm: Afm
     ) {
         this.enabled = typedConfig.enabled;
         this.configurationChangeDisposable = workspace.onDidChangeConfiguration(this.onDidChangeConfiguration, this);
@@ -114,7 +114,7 @@ export class Model implements Disposable {
         this.disposables.push(fsWatcher);
 
         const onWorkspaceChange = anyEvent(fsWatcher.onDidChange, fsWatcher.onDidCreate, fsWatcher.onDidDelete);
-        onWorkspaceChange(this.onPossibleHgRepositoryChange, this, this.disposables);
+        onWorkspaceChange(this.onPossibleAfmRepositoryChange, this, this.disposables);
 
         this.scanWorkspaceFolders();
         // this.status();
@@ -125,13 +125,13 @@ export class Model implements Disposable {
         openRepositories.forEach(r => r.dispose());
         this.openRepositories = [];
 
-        this.possibleHgRepositoryPaths.clear();
+        this.possibleAfmRepositoryPaths.clear();
         this.disposables = dispose(this.disposables);
     }
 
     /**
      * Scans the first level of each workspace folder, looking
-     * for hg repositories.
+     * for afm repositories.
      */
     private async scanWorkspaceFolders(): Promise<void> {
         for (const folder of workspace.workspaceFolders || []) {
@@ -139,24 +139,24 @@ export class Model implements Disposable {
             const children = await new Promise<string[]>((c, e) => fs.readdir(root, (err, r) => err ? e(err) : c(r)));
 
             children
-                .filter(child => child !== '.hg')
+                .filter(child => child !== '.afws')
                 .forEach(child => this.tryOpenRepository(path.join(root, child)));
         }
     }
 
-    private onPossibleHgRepositoryChange(uri: Uri): void {
-        const possibleHgRepositoryPath = uri.fsPath.replace(/\.hg.*$/, '');
-        this.possibleHgRepositoryPaths.add(possibleHgRepositoryPath);
-        this.eventuallyScanPossibleHgRepositories();
+    private onPossibleAfmRepositoryChange(uri: Uri): void {
+        const possibleHgRepositoryPath = uri.fsPath.replace(/\.afws.*$/, '');
+        this.possibleAfmRepositoryPaths.add(possibleHgRepositoryPath);
+        this.eventuallyScanPossibleAfmRepositories();
     }
 
     @debounce(500)
-    private eventuallyScanPossibleHgRepositories(): void {
-        for (const path of this.possibleHgRepositoryPaths) {
+    private eventuallyScanPossibleAfmRepositories(): void {
+        for (const path of this.possibleAfmRepositoryPaths) {
             this.tryOpenRepository(path);
         }
 
-        this.possibleHgRepositoryPaths.clear();
+        this.possibleAfmRepositoryPaths.clear();
     }
 
     private async onDidChangeWorkspaceFolders({ added, removed }: WorkspaceFoldersChangeEvent): Promise<void> {
@@ -203,7 +203,7 @@ export class Model implements Disposable {
         }
 
         try {
-            const repositoryRoot = await this._hg.getRepositoryRoot(path);
+            const repositoryRoot = await this._afm.getRepositoryRoot(path);
 
             // This can happen whenever `path` has the wrong case sensitivity in
             // case insensitive file systems
@@ -213,11 +213,11 @@ export class Model implements Disposable {
                 return;
             }
 
-            const repository = new Repository(this._hg.open(repositoryRoot));
+            const repository = new Repository(this._afm.open(repositoryRoot));
 
             this.open(repository);
         } catch (err) {
-            if (err.fossilErrorCode === FossilErrorCodes.NotAFossilRepository) {
+            if (err.afmErrorCode === AfmErrorCodes.NotAFossilRepository) {
                 return;
             }
 

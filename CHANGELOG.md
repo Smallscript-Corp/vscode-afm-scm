@@ -1,6 +1,12 @@
 Changelog
 =============================================
 
+v0.0.18
+---------------------------------------------
+## What's New
+- Cloned and migrated to support afm-scm
+
+
 
 v0.0.18
 ---------------------------------------------
@@ -33,7 +39,7 @@ v0.0.16
 v0.0.15
 ---------------------------------------------
 ## What's New
-- Don't perform input checking for `fossil cat` commands
+- Don't perform input checking for `afm cat` commands
 - update dependencies to reduce extension size
 
 
@@ -48,13 +54,13 @@ v0.0.13
 ---------------------------------------------
 ## What's New
 - Wait for user to select to open error prompt before opening it
-- Filter out additional error case of `fossil cat` command
+- Filter out additional error case of `afm cat` command
 
 
 v0.0.12
 ---------------------------------------------
 ## What's New
-- Open Fossil output log on error prompt
+- Open Afm output log on error prompt
 - Update which errors generate error prompt
 - General cleanup
 
@@ -62,8 +68,8 @@ v0.0.12
 v0.0.11
 ---------------------------------------------
 ## What's New
-- Actually Fix `Fossil: Commit All`, v0.0.9 didn't fix it
-- When error occurs prompt to open Fossil output log
+- Actually Fix `Afm: Commit All`, v0.0.9 didn't fix it
+- When error occurs prompt to open Afm output log
 - General cleanup
 
 
@@ -72,14 +78,14 @@ v0.0.10
 ## What's New
 - Fix for diff files not refreshing after commit
 - Update icons and menus to be more intuitive
-- Performance improvements, fewer calls to fossil db
+- Performance improvements, fewer calls to afm db
 - General cleanup and removal of dead code
 
 
 v0.0.9
 ---------------------------------------------
 ## What's New
-- Fix `Fossil: Commit All`
+- Fix `Afm: Commit All`
 - Make commit command more flexible
   and show warning when there are no staged changes
 - Fix single-click to open diff
@@ -91,7 +97,7 @@ v0.0.7
 ---------------------------------------------
 ## What's New
 - Update commit to allow non-ASCII characters
-- Create webview with stdout content when fossil prompts user for input
+- Create webview with stdout content when afm prompts user for input
 
 
 v0.0.6
@@ -105,9 +111,9 @@ v0.0.6
 v0.0.5
 ---------------------------------------------
 ## What's New
-- Update readme with preferable page for fossil install and
+- Update readme with preferable page for afm install and
   point to proper pull requests
-- add prompt when fossil requests stdin
+- add prompt when afm requests stdin
     - only works for clone command at the moment
 
 
@@ -115,7 +121,7 @@ v0.0.4
 ---------------------------------------------
 ## What's New
 - Fixed merge command and issue with merge files not showing in change list
-    - fossil merge commits require a full merge so still use this command with
+    - afm merge commits require a full merge so still use this command with
       caution, and fallback to command line if needed
 - Fixed create branch command
 
@@ -142,7 +148,7 @@ v0.0.1
 ## What's New
 - New Repo Initialization workflow
 - Updated working changes\staged changes workflow
-    - Fossil doesn't have a staging area, but has selective commit,
+    - Afm doesn't have a staging area, but has selective commit,
       so staging is purely an artifact of the extension.
       If you close the extension and reopen, the stage area will be cleared
 - Updated some icons to match git icons for vs code 1.37.0

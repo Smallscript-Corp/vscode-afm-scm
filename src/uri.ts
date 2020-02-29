@@ -14,7 +14,7 @@ export function fromFossilUri(uri: Uri): { path: string} {
 
 export function toFossilUri(uri: Uri): Uri {
     return uri.with({
-        scheme: 'fossil-original',
+        scheme: 'afm-original',
         path: uri.path,
         query: JSON.stringify({
             path: uri.fsPath

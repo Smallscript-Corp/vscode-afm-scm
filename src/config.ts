@@ -6,7 +6,7 @@ const DEFAULT_AUTO_IN_OUT_INTERVAL_SECONDS = 3 * 60 /* three minutes */;
 
 class Config {
     private get config() {
-        return workspace.getConfiguration('fossil');
+        return workspace.getConfiguration('afm');
     }
 
     private get<T>(name: keyof Config, defaultValue: T): T {

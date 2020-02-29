@@ -1,28 +1,28 @@
 {
-  "name": "fossil",
-  "publisher": "koog1000",
-  "displayName": "Fossil",
-  "description": "Integrated Fossil source control",
+  "name": "afm",
+  "publisher": "smallscript",
+  "displayName": "Afm",
+  "description": "Integrated Afm source control",
   "galleryBanner": {
     "color": "#999999",
     "theme": "dark"
   },
-  "homepage": "https://github.com/koog1000/vscode-fossil",
+  "homepage": "https://github.com/Smallscript-Corp/vscode-afm-scm",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/koog1000/vscode-fossil.git"
+    "url": "https://github.com/Smallscript-Corp/vscode-afm-scm.git"
   },
   "bugs": {
-    "url": "https://github.com/koog1000/vscode-fossil/issues"
+    "url": "https://github.com/Smallscript-Corp/vscode-afm-scm/issues"
   },
   "version": "0.0.19",
   "engines": {
     "vscode": "^1.23.0"
   },
   "keywords": [
-    "fossil-scm",
-    "fossil",
+    "afm-scm",
+    "afm",
     "source",
     "scm"
   ],
@@ -39,725 +39,725 @@
   "contributes": {
     "commands": [
       {
-        "command": "fossil.add",
+        "command": "afm.add",
         "title": "%command.add%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/add.svg",
           "dark": "resources/icons/dark/add.svg"
         }
       },
       {
-        "command": "fossil.addAll",
+        "command": "afm.addAll",
         "title": "%command.addAll%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/add.svg",
           "dark": "resources/icons/dark/add.svg"
         }
       },
       {
-        "command": "fossil.ignore",
+        "command": "afm.ignore",
         "title": "%command.ignore%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/discard.svg",
           "dark": "resources/icons/dark/discard.svg"
         }
       },
       {
-        "command": "fossil.branch",
+        "command": "afm.branch",
         "title": "%command.branch%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.clean",
+        "command": "afm.clean",
         "title": "%command.clean%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.revert",
+        "command": "afm.revert",
         "title": "%command.revert%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/discard.svg",
           "dark": "resources/icons/dark/discard.svg"
         }
       },
       {
-        "command": "fossil.revertAll",
+        "command": "afm.revertAll",
         "title": "%command.revertAll%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/discard.svg",
           "dark": "resources/icons/dark/discard.svg"
         }
       },
       {
-        "command": "fossil.commit",
+        "command": "afm.commit",
         "title": "%command.commit%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/check.svg",
           "dark": "resources/icons/dark/check.svg"
         }
       },
       {
-        "command": "fossil.commitAll",
+        "command": "afm.commitAll",
         "title": "%command.commitAll%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.commitStaged",
+        "command": "afm.commitStaged",
         "title": "%command.commitStaged%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.clone",
+        "command": "afm.clone",
         "title": "%command.clone%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.fileLog",
+        "command": "afm.fileLog",
         "title": "%command.fileLog%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.remove",
+        "command": "afm.remove",
         "title": "%command.forget%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.init",
+        "command": "afm.init",
         "title": "%command.init%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "icon.png",
           "dark": "icon.png"
         }
       },
       {
-        "command": "fossil.close",
+        "command": "afm.close",
         "title": "%command.close%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.log",
+        "command": "afm.log",
         "title": "%command.log%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.logBranch",
+        "command": "afm.logBranch",
         "title": "%command.logBranch%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.logDefault",
+        "command": "afm.logDefault",
         "title": "%command.logDefault%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.logRepo",
+        "command": "afm.logRepo",
         "title": "%command.logRepo%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.markResolved",
+        "command": "afm.markResolved",
         "title": "%command.markResolved%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/check.svg",
           "dark": "resources/icons/dark/check.svg"
         }
       },
       {
-        "command": "fossil.mergeHeads",
+        "command": "afm.mergeHeads",
         "title": "%command.mergeHeads%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.mergeWithLocal",
+        "command": "afm.mergeWithLocal",
         "title": "%command.mergeWithLocal%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.openChange",
+        "command": "afm.openChange",
         "title": "%command.openChange%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/open-change.svg",
           "dark": "resources/icons/dark/open-change.svg"
         }
       },
       {
-        "command": "fossil.openChangeFromUri",
+        "command": "afm.openChangeFromUri",
         "title": "%command.openChange%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/open-change.svg",
           "dark": "resources/icons/dark/open-change.svg"
         }
       },
       {
-        "command": "fossil.openFile",
+        "command": "afm.openFile",
         "title": "%command.openFile%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/open-file.svg",
           "dark": "resources/icons/dark/open-file.svg"
         }
       },
       {
-        "command": "fossil.openFiles",
+        "command": "afm.openFiles",
         "title": "%command.openFiles%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.openFileFromUri",
+        "command": "afm.openFileFromUri",
         "title": "%command.openFile%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/open-file.svg",
           "dark": "resources/icons/dark/open-file.svg"
         }
       },
       {
-        "command": "fossil.openui",
+        "command": "afm.openui",
         "title": "%command.openui%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.pull",
+        "command": "afm.pull",
         "title": "%command.pull%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.push",
+        "command": "afm.push",
         "title": "%command.push%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.pushTo",
+        "command": "afm.pushTo",
         "title": "%command.pushTo%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.refresh",
+        "command": "afm.refresh",
         "title": "%command.refresh%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/refresh.svg",
           "dark": "resources/icons/dark/refresh.svg"
         }
       },
       {
-        "command": "fossil.resolveAgain",
+        "command": "afm.resolveAgain",
         "title": "%command.resolveAgain%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/refresh.svg",
           "dark": "resources/icons/dark/refresh.svg"
         }
       },
       {
-        "command": "fossil.showOutput",
+        "command": "afm.showOutput",
         "title": "%command.showOutput%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.stage",
+        "command": "afm.stage",
         "title": "%command.stage%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/add.svg",
           "dark": "resources/icons/dark/add.svg"
         }
       },
       {
-        "command": "fossil.stageAll",
+        "command": "afm.stageAll",
         "title": "%command.stageAll%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/add.svg",
           "dark": "resources/icons/dark/add.svg"
         }
       },
       {
-        "command": "fossil.undo",
+        "command": "afm.undo",
         "title": "%command.undo%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.unresolve",
+        "command": "afm.unresolve",
         "title": "%command.unresolve%",
-        "category": "Fossil"
+        "category": "Afm"
       },
       {
-        "command": "fossil.unstage",
+        "command": "afm.unstage",
         "title": "%command.unstage%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/unstage.svg",
           "dark": "resources/icons/dark/unstage.svg"
         }
       },
       {
-        "command": "fossil.unstageAll",
+        "command": "afm.unstageAll",
         "title": "%command.unstageAll%",
-        "category": "Fossil",
+        "category": "Afm",
         "icon": {
           "light": "resources/icons/light/unstage.svg",
           "dark": "resources/icons/dark/unstage.svg"
         }
       },
       {
-        "command": "fossil.update",
+        "command": "afm.update",
         "title": "%command.update%",
-        "category": "Fossil"
+        "category": "Afm"
       }
     ],
     "menus": {
       "commandPalette": [
         {
-          "command": "fossil.clone",
-          "when": "config.fossil.enabled"
+          "command": "afm.clone",
+          "when": "config.afm.enabled"
         },
         {
-          "command": "fossil.init",
-          "when": "config.fossil.enabled"
+          "command": "afm.init",
+          "when": "config.afm.enabled"
         },
         {
-          "command": "fossil.openui",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.openui",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.refresh",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.refresh",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.openChange",
+          "command": "afm.openChange",
           "when": "false"
         },
         {
-          "command": "fossil.openFile",
+          "command": "afm.openFile",
           "when": "false"
         },
         {
-          "command": "fossil.openFiles",
+          "command": "afm.openFiles",
           "when": "false"
         },
         {
-          "command": "fossil.openChangeFromUri",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.openChangeFromUri",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.openFileFromUri",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.openFileFromUri",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.stage",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.stage",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.stageAll",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.stageAll",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.unstage",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.unstage",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.unstageAll",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.unstageAll",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.revert",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.revert",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.revertAll",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.revertAll",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.commit",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.commit",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.commitStaged",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.commitStaged",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.commitAll",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.commitAll",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.undo",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.undo",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.update",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.update",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.branch",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.branch",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.pull",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.pull",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.push",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.push",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.pushTo",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.pushTo",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.mergeHeads",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.mergeHeads",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.mergeWithLocal",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.mergeWithLocal",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.showOutput",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.showOutput",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.fileLog",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.fileLog",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.log",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.log",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.logBranch",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.logBranch",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.logDefault",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.logDefault",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         },
         {
-          "command": "fossil.logRepo",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0"
+          "command": "afm.logRepo",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
         }
       ],
       "scm/title": [
         {
-          "command": "fossil.init",
+          "command": "afm.init",
           "group": "navigation",
-          "when": "config.fossil.enabled && scmProvider == '' && fossilOpenRepositoryCount == 0"
+          "when": "config.afm.enabled && scmProvider == '' && afmOpenRepositoryCount == 0"
         },
         {
-          "command": "fossil.commit",
+          "command": "afm.commit",
           "group": "navigation",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.refresh",
+          "command": "afm.refresh",
           "group": "navigation",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.pull",
+          "command": "afm.pull",
           "group": "1_sync",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.push",
+          "command": "afm.push",
           "group": "1_sync",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.pushTo",
+          "command": "afm.pushTo",
           "group": "1_sync",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.commitStaged",
+          "command": "afm.commitStaged",
           "group": "3_commit",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.commitAll",
+          "command": "afm.commitAll",
           "group": "3_commit",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.undo",
+          "command": "afm.undo",
           "group": "3_commit",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.unstageAll",
+          "command": "afm.unstageAll",
           "group": "4_stage",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.revertAll",
+          "command": "afm.revertAll",
           "group": "4_stage",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.clean",
+          "command": "afm.clean",
           "group": "4_stage",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.mergeHeads",
+          "command": "afm.mergeHeads",
           "group": "5_merge",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.mergeWithLocal",
+          "command": "afm.mergeWithLocal",
           "group": "5_merge",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         },
         {
-          "command": "fossil.showOutput",
+          "command": "afm.showOutput",
           "group": "6_output",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         }
       ],
       "scm/sourceControl": [
         {
-          "command": "fossil.close",
+          "command": "afm.close",
           "group": "navigation",
-          "when": "config.fossil.enabled && scmProvider == fossil"
+          "when": "config.afm.enabled && scmProvider == afm"
         }
       ],
       "scm/resourceGroup/context": [
         {
-          "command": "fossil.unstageAll",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == staging",
+          "command": "afm.unstageAll",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == staging",
           "group": "1_modification"
         },
         {
-          "command": "fossil.unstageAll",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == staging",
+          "command": "afm.unstageAll",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == staging",
           "group": "inline"
         },
         {
-          "command": "fossil.revertAll",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.revertAll",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "1_modification"
         },
         {
-          "command": "fossil.stageAll",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.stageAll",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "1_modification"
         },
         {
-          "command": "fossil.stageAll",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.stageAll",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "inline"
         },
         {
-          "command": "fossil.revertAll",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.revertAll",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "inline"
         },
         {
-          "command": "fossil.addAll",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == untracked",
+          "command": "afm.addAll",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == untracked",
           "group": "1_modification"
         },
         {
-          "command": "fossil.clean",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == untracked",
+          "command": "afm.clean",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == untracked",
           "group": "1_modification"
         },
         {
-          "command": "fossil.addAll",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == untracked",
+          "command": "afm.addAll",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == untracked",
           "group": "inline"
         },
         {
-          "command": "fossil.openFiles",
-          "when": "config.fossil.enabled && scmProvider == fossil",
+          "command": "afm.openFiles",
+          "when": "config.afm.enabled && scmProvider == afm",
           "group": "navigation"
         },
         {
-          "command": "fossil.openChange",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup != untracked",
+          "command": "afm.openChange",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup != untracked",
           "group": "navigation"
         }
       ],
       "scm/resourceState/context": [
         {
-          "command": "fossil.unresolve",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == merge",
+          "command": "afm.unresolve",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == merge",
           "group": "1_modification"
         },
         {
-          "command": "fossil.openChange",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == staging",
+          "command": "afm.openChange",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == staging",
           "group": "navigation"
         },
         {
-          "command": "fossil.unstage",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == staging",
+          "command": "afm.unstage",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == staging",
           "group": "1_modification"
         },
         {
-          "command": "fossil.unstage",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == staging",
+          "command": "afm.unstage",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == staging",
           "group": "inline"
         },
         {
-          "command": "fossil.openChange",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.openChange",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "navigation"
         },
         {
-          "command": "fossil.stage",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.stage",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "1_modification"
         },
         {
-          "command": "fossil.revert",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.revert",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "1_modification"
         },
         {
-          "command": "fossil.revert",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.revert",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "inline"
         },
         {
-          "command": "fossil.stage",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.stage",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "inline"
         },
         {
-          "command": "fossil.add",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == untracked",
+          "command": "afm.add",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == untracked",
           "group": "inline"
         },
         {
-          "command": "fossil.stage",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == untracked",
+          "command": "afm.stage",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == untracked",
           "group": "1_modification"
         },
         {
-          "command": "fossil.ignore",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == untracked",
+          "command": "afm.ignore",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == untracked",
           "group": "1_modification"
         },
         {
-          "command": "fossil.openFiles",
-          "when": "config.fossil.enabled && scmProvider == fossil",
+          "command": "afm.openFiles",
+          "when": "config.afm.enabled && scmProvider == afm",
           "group": "navigation"
         },
         {
-          "command": "fossil.remove",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.remove",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "2_modification"
         }
       ],
       "scm/resourceFolder/context": [
         {
-          "command": "fossil.unstage",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == staging",
+          "command": "afm.unstage",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == staging",
           "group": "1_modification"
         },
         {
-          "command": "fossil.unstage",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == staging",
+          "command": "afm.unstage",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == staging",
           "group": "inline"
         },
         {
-          "command": "fossil.revert",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.revert",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "1_modification"
         },
         {
-          "command": "fossil.stage",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.stage",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "1_modification"
         },
         {
-          "command": "fossil.stage",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.stage",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "inline"
         },
         {
-          "command": "fossil.revert",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == working",
+          "command": "afm.revert",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == working",
           "group": "inline"
         },
         {
-          "command": "fossil.add",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == untracked",
+          "command": "afm.add",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == untracked",
           "group": "1_modification"
         },
         {
-          "command": "fossil.clean",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == untracked",
+          "command": "afm.clean",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == untracked",
           "group": "1_modification"
         },
         {
-          "command": "fossil.add",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup == untracked",
+          "command": "afm.add",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup == untracked",
           "group": "inline"
         },
         {
-          "command": "fossil.openFiles",
-          "when": "config.fossil.enabled && scmProvider == fossil",
+          "command": "afm.openFiles",
+          "when": "config.afm.enabled && scmProvider == afm",
           "group": "navigation"
         },
         {
-          "command": "fossil.openChange",
-          "when": "config.fossil.enabled && scmProvider == fossil && scmResourceGroup != untracked",
+          "command": "afm.openChange",
+          "when": "config.afm.enabled && scmProvider == afm && scmResourceGroup != untracked",
           "group": "navigation"
         }
       ],
       "editor/title": [
         {
-          "command": "fossil.openFileFromUri",
+          "command": "afm.openFileFromUri",
           "group": "navigation",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0 && isInDiffEditor && resourceScheme != extension && scmProvider == fossil"
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0 && isInDiffEditor && resourceScheme != extension && scmProvider == afm"
         },
         {
-          "command": "fossil.openChangeFromUri",
+          "command": "afm.openChangeFromUri",
           "group": "navigation",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0 && !isInDiffEditor && resourceScheme == file && scmProvider == fossil"
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0 && !isInDiffEditor && resourceScheme == file && scmProvider == afm"
         },
         {
-          "command": "fossil.fileLog",
-          "when": "config.fossil.enabled && fossilOpenRepositoryCount != 0 && !isInDiffEditor"
+          "command": "afm.fileLog",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0 && !isInDiffEditor"
         }
       ]
     },
     "configuration": {
-      "title": "Fossil",
+      "title": "Afm",
       "properties": {
-        "fossil.enabled": {
+        "afm.enabled": {
           "type": "boolean",
           "description": "%config.enabled%",
           "default": true
         },
-        "fossil.autoInOutInterval": {
+        "afm.autoInOutInterval": {
           "type": "number",
           "description": "%config.autoInOutInterval%",
           "default": 180
         },
-        "fossil.autoRefresh": {
+        "afm.autoRefresh": {
           "type": "boolean",
           "description": "%config.autoRefresh%",
           "default": true
         },
-        "fossil.autoUpdate": {
+        "afm.autoUpdate": {
           "type": "boolean",
           "description": "%config.autoUpdate%",
           "default": true
         },
-        "fossil.path": {
+        "afm.path": {
           "type": [
             "string",
             "null"
@@ -785,8 +785,8 @@
     "vscode": "^1.1.23"
   },
   "__metadata": {
-    "id": "e828bfe6-95e7-4c7a-a334-ae2cc5ba8788",
-    "publisherDisplayName": "koog1000",
-    "publisherId": "8e4cabe1-5c1f-4bf5-bbf3-8bb8d5de842c"
+    "id": "bdda3a72-ac29-4d12-9587-5599332382b9",
+    "publisherDisplayName": "Smallscript",
+    "publisherId": "365f16b8-6d88-4369-9a2b-240994c0cb15"
   }
 }

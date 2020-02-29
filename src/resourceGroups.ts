@@ -1,4 +1,4 @@
-import { FossilError, IFileStatus, IRepoStatus } from "./fossilBase";
+import { AfmError, IFileStatus, IRepoStatus } from "./afmBase";
 import { Uri, SourceControlResourceGroup, SourceControl } from "vscode";
 import * as path from "path";
 import * as nls from "vscode-nls";
@@ -145,7 +145,7 @@ export function groupStatuses({
             case '!': status = Status.MISSING;   break;
             case 'A': status = renamed ? Status.RENAMED : Status.ADDED; break;
             case 'C': status = Status.CONFLICT; break;
-            default: throw new FossilError({ message: "Unknown rawStatus: " + rawStatus })
+            default: throw new AfmError({ message: "Unknown rawStatus: " + rawStatus })
         }
 
         if (status === Status.IGNORED || status === Status.UNTRACKED) {

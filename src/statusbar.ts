@@ -5,7 +5,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { Disposable, Command, EventEmitter, Event } from "vscode";
-import { Ref, IRepoStatus } from "./fossilBase";
+import { Ref, IRepoStatus } from "./afmBase";
 import { anyEvent, dispose } from './util';
 import { AutoInOutStatuses, AutoInOutState } from "./autoinout";
 import * as nls from 'vscode-nls';
@@ -50,7 +50,7 @@ class ScopeStatusBar {
             (this.repository.mergeGroup.resources.length > 0 ? '!' : '');
 
         return {
-            command: 'fossil.branchChange',
+            command: 'afm.branchChange',
             tooltip: localize('branch change', 'Change Branch...'),
             title,
             arguments: [this.repository]
@@ -161,7 +161,7 @@ class SyncStatusBar {
         let autoInOut = this.describeAutoInOutStatus();
         let icon = autoInOut.icon;
         let text = '';
-        let command = 'fossil.pull'; // pull in autoupdate context performs an 'update'
+        let command = 'afm.pull'; // pull in autoupdate context performs an 'update'
         let tooltip = autoInOut.message;
 
         const { syncStatus } = this.state;

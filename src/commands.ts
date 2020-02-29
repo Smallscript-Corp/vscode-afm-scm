@@ -9,7 +9,7 @@ import {Uri, commands, scm, Disposable, window, workspace, OutputChannel,
         TextDocumentShowOptions, ViewColumn } from "vscode";
 import * as nls from "vscode-nls";
 import * as path from "path";
-import { Ref, Fossil, Commit, FossilError, FossilErrorCodes, IFileStatus, CommitDetails } from "./fossilBase";
+import { Ref, Afm, Commit, AfmError, AfmErrorCodes, IFileStatus, CommitDetails } from "./afmBase";
 import { Model } from "./model";
 import { Resource, Status, CommitOptions, CommitScope, MergeStatus, LogEntriesOptions, Repository } from "./repository"
 import { WorkingDirectoryGroup, StagingGroup, MergeGroup, UntrackedGroup, isResourceGroup } from "./resourceGroups";
@@ -50,7 +50,7 @@ export class CommandCenter {
     private disposables: Disposable[];
 
     constructor(
-        private fossil: Fossil,
+        private afm: Afm,
         model: Model | undefined,
         private outputChannel: OutputChannel
     ) {
@@ -69,12 +69,12 @@ export class CommandCenter {
         });
     }
 
-    @command('fossil.refresh', { repository: true })
+    @command('afm.refresh', { repository: true })
     async refresh(repository: Repository): Promise<void> {
         await repository.status();
     }
 
-    @command('fossil.openResource')
+    @command('afm.openResource')
     async openResource(resource: Resource): Promise<void> {
         await this._openResource(resource, undefined, true, false);
     }
@@ -134,13 +134,13 @@ export class CommandCenter {
         if (resource.mergeStatus === MergeStatus.UNRESOLVED &&
             resource.status !== Status.MISSING &&
             resource.status !== Status.DELETED) {
-            return resource.resourceUri.with({ scheme: 'fossil' });
+            return resource.resourceUri.with({ scheme: 'afm' });
         }
 
         switch (resource.status) {
             case Status.DELETED:
             case Status.MISSING:
-                return resource.resourceUri.with({ scheme: 'fossil', query: 'empty' });
+                return resource.resourceUri.with({ scheme: 'afm', query: 'empty' });
 
             case Status.ADDED:
             case Status.IGNORED:
@@ -181,7 +181,7 @@ export class CommandCenter {
         return '';
     }
 
-    @command('fossil.clone')
+    @command('afm.clone')
     async clone(): Promise<void> {
         var url = await interaction.inputRepoUrl();
         if (!url) {
@@ -204,14 +204,14 @@ export class CommandCenter {
             return;
         }
 
-        const clonePromise = this.fossil.clone(url, parentPath);
+        const clonePromise = this.afm.clone(url, parentPath);
         interaction.statusCloning(clonePromise);
 
         try {
             const repositoryPath = await clonePromise;
             const openClonedRepo = await interaction.promptOpenClonedRepo();
             if (openClonedRepo) {
-                this.fossil.openClone(repositoryPath, parentPath)
+                this.afm.openClone(repositoryPath, parentPath)
             }
         }
         catch (err) {
@@ -219,7 +219,7 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.init')
+    @command('afm.init')
     async init(): Promise<void> {
         const result = await interaction.openFileDialog(false, true, false, localize('init repo', 'Respository Folder'))
 
@@ -231,21 +231,21 @@ export class CommandCenter {
         const path = uri.fsPath;
         const fileName = await interaction.inputRepoName()
         if(fileName && fileName.length){
-            await this.fossil.init(path, fileName);
+            await this.afm.init(path, fileName);
             const openClonedRepo = await interaction.promptOpenClonedRepo();
             if (openClonedRepo) {
-                this.fossil.openClone(fileName, path)
+                this.afm.openClone(fileName, path)
             }
         }
         await this.model.tryOpenRepository(path);
     }
 
-    @command('fossil.close', { repository: true})
+    @command('afm.close', { repository: true})
     async close(repository: Repository): Promise<void> {
         this.model.close(repository);
     }
 
-    @command('fossil.openFiles')
+    @command('afm.openFiles')
     openFiles(...resources: (Resource | SourceControlResourceGroup)[]): Promise<void> {
         if (resources.length === 1) {
             // a resource group proxy object?
@@ -260,7 +260,7 @@ export class CommandCenter {
         return this.openFile(...<Resource[]>resources);
     }
 
-    @command('fossil.openFile')
+    @command('afm.openFile')
     async openFile(...resources: Resource[]): Promise<void> {
         if (!resources) {
             return;
@@ -288,7 +288,7 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.openChange')
+    @command('afm.openChange')
     async openChange(...resources: Resource[]): Promise<void> {
         if (!resources) {
             return;
@@ -310,7 +310,7 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.openFileFromUri')
+    @command('afm.openFileFromUri')
     async openFileFromUri(uri?: Uri): Promise<void> {
         const resource = this.getSCMResource(uri);
 
@@ -321,7 +321,7 @@ export class CommandCenter {
         return await this.openFile(resource);
     }
 
-    @command('fossil.openChangeFromUri')
+    @command('afm.openChangeFromUri')
     async openChangeFromUri(uri?: Uri): Promise<void> {
         const resource = this.getSCMResource(uri);
 
@@ -332,7 +332,7 @@ export class CommandCenter {
         return await this._openResource(resource);
     }
 
-    @command('fossil.ignore')
+    @command('afm.ignore')
     async ignore(...resourceStates: SourceControlResourceState[]): Promise<void> {
         if (resourceStates.length === 0) {
             const resource = this.getSCMResource();
@@ -359,12 +359,12 @@ export class CommandCenter {
         // await this.runByRepository(resources, async (repository, uris) => repository.ignore(...uris));
     }
 
-    @command('fossil.addAll', { repository: true })
+    @command('afm.addAll', { repository: true })
     async addAll(repository: Repository): Promise<void> {
         return await repository.add();
     }
 
-    @command('fossil.add')
+    @command('afm.add')
     async add(...resourceStates: SourceControlResourceState[]): Promise<void> {
         if (resourceStates.length === 0) {
             const resource = this.getSCMResource();
@@ -390,7 +390,7 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.remove')
+    @command('afm.remove')
     async remove(...resourceStates: SourceControlResourceState[]): Promise<void> {
         if (resourceStates.length === 0) {
             const resource = this.getSCMResource();
@@ -417,7 +417,7 @@ export class CommandCenter {
         // await this.runByRepository(resources, async (repository, uris) => repository.remove(...uris));
     }
 
-    @command('fossil.stage') // run by repo
+    @command('afm.stage') // run by repo
     async stage(...resourceStates: SourceControlResourceState[]): Promise<void> {
         if (resourceStates.length === 0) {
             const resource = this.getSCMResource();
@@ -450,12 +450,12 @@ export class CommandCenter {
         // await this.runByRepository(resources, async (repository, uris) => repository.stage(...uris));
     }
 
-    @command('fossil.stageAll', { repository: true })
+    @command('afm.stageAll', { repository: true })
     async stageAll(repository: Repository): Promise<void> {
         await repository.stage();
     }
 
-    @command('fossil.unstage')
+    @command('afm.unstage')
     async unstage(...resourceStates: SourceControlResourceState[]): Promise<void> {
         if (resourceStates.length === 0) {
             const resource = this.getSCMResource();
@@ -483,12 +483,12 @@ export class CommandCenter {
         // await this.runByRepository(resources, async (repository, uris) => repository.unstage(...uris));
     }
 
-    @command('fossil.unstageAll', { repository: true })
+    @command('afm.unstageAll', { repository: true })
     async unstageAll(repository: Repository): Promise<void> {
         return await repository.unstage();
     }
 
-    @command('fossil.revert')
+    @command('afm.revert')
     async revert(...resourceStates: SourceControlResourceState[]): Promise<void> {
         if (resourceStates.length === 0) {
             const resource = this.getSCMResource();
@@ -527,7 +527,7 @@ export class CommandCenter {
         // await this.runByRepository(resources, async (repository, uris) => repository.revert(...uris));
     }
 
-    @command('fossil.revertAll', { repository: true })
+    @command('afm.revertAll', { repository: true })
     async revertAll(repository: Repository): Promise<void> {
         if (await interaction.confirmDiscardAllChanges()) {
             const resources = repository.workingDirectoryGroup.resources;
@@ -535,7 +535,7 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.clean', { repository: true })
+    @command('afm.clean', { repository: true })
     async clean(repository: Repository): Promise<void> {
         if (await interaction.confirmDeleteExtras()) {
             await repository.clean();
@@ -613,12 +613,12 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.commit', { repository: true })
+    @command('afm.commit', { repository: true })
     async commit(repository: Repository): Promise<void> {
         await this.commitWithAnyInput(repository);
     }
 
-    @command('fossil.commitWithInput', { repository: true })
+    @command('afmmmitWithInput', { repository: true })
     async commitWithInput(repository: Repository): Promise<void> {
         const didCommit = await this.smartCommit(repository, async () => repository.sourceControl.inputBox.value);
 
@@ -627,12 +627,12 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.commitStaged', { repository: true })
+    @command('afm.commitStaged', { repository: true })
     async commitStaged(repository: Repository): Promise<void> {
         await this.commitWithAnyInput(repository, { scope: CommitScope.STAGED_CHANGES });
     }
 
-    @command('fossil.commitAll', { repository: true })
+    @command('afm.commitAll', { repository: true })
     async commitAll(repository: Repository): Promise<void> {
         await this.commitWithAnyInput(repository, { scope: CommitScope.ALL });
     }
@@ -641,7 +641,7 @@ export class CommandCenter {
         commands.executeCommand("workbench.view.scm");
     }
 
-    @command('fossil.undo', { repository: true })
+    @command('afm.undo', { repository: true })
     async undo(repository: Repository): Promise<void> {
         try {
             const undo = await repository.undo(true); // dry-run
@@ -650,13 +650,13 @@ export class CommandCenter {
             }
         }
         catch (e) {
-            if (e instanceof FossilError && e.fossilErrorCode === FossilErrorCodes.NoUndoInformationAvailable) {
+            if (e instanceof AfmError && e.afmErrorCode === AfmErrorCodes.NoUndoInformationAvailable) {
                 await interaction.warnNoUndo();
             }
         }
     }
 
-    @command('fossil.update', { repository: true })
+    @command('afm.update', { repository: true })
     async update(repository: Repository): Promise<void> {
         let refs: Ref[];
         let unclean = false;
@@ -676,7 +676,7 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.branchChange', { repository: true })
+    @command('afm.branchChange', { repository: true })
     async branchChange(repository: Repository): Promise<void> {
         let refs: Ref[];
         let unclean = false;
@@ -696,7 +696,7 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.branch', { repository: true })
+    @command('afm.branch', { repository: true })
     async branch(repository: Repository): Promise<void> {
         const result = await interaction.inputBranchName();
         if (!result) {
@@ -708,7 +708,7 @@ export class CommandCenter {
             await repository.branch(name);
         }
         catch (e) {
-            if (e instanceof FossilError && e.fossilErrorCode === FossilErrorCodes.BranchAlreadyExists) {
+            if (e instanceof AfmError && e.afmErrorCode === AfmErrorCodes.BranchAlreadyExists) {
                 const action = await interaction.warnBranchAlreadyExists(name);
                 if (action === BranchExistsAction.Reopen) {
                     await repository.branch(name, { allowBranchReuse: true });
@@ -720,7 +720,7 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.pull', { repository: true })
+    @command('afm.pull', { repository: true })
     async pull(repository: Repository): Promise<void> {
         const paths = await repository.getPath();
 
@@ -733,7 +733,7 @@ export class CommandCenter {
         await repository.pull(pullOptions);
     }
 
-    @command('fossil.mergeWithLocal', { repository: true })
+    @command('afm.mergeWithLocal', { repository: true })
     async mergeWithLocal(repository: Repository) {
         if (await interaction.checkThenWarnOutstandingMerge(repository, WarnScenario.Merge) ||
             await interaction.checkThenErrorUnclean(repository, WarnScenario.Merge)) {
@@ -749,7 +749,7 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.mergeHeads', { repository: true })
+    @command('afm.mergeHeads', { repository: true })
     async mergeHeads(repository: Repository) {
         if (await interaction.checkThenWarnOutstandingMerge(repository, WarnScenario.Merge) ||
             await interaction.checkThenErrorUnclean(repository, WarnScenario.Merge)) {
@@ -791,8 +791,8 @@ export class CommandCenter {
             }
         }
         catch (e) {
-            if (e instanceof FossilError && e.fossilErrorCode === FossilErrorCodes.UntrackedFilesDiffer && e.hgFilenames) {
-                interaction.errorUntrackedFilesDiffer(e.hgFilenames);
+            if (e instanceof AfmError && e.afmErrorCode === AfmErrorCodes.UntrackedFilesDiffer && e.afmFilenames) {
+                interaction.errorUntrackedFilesDiffer(e.afmFilenames);
                 return;
             }
 
@@ -800,12 +800,12 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.push', { repository: true })
+    @command('afm.push', { repository: true })
     async push(repository: Repository): Promise<void> {
         await repository.push(undefined);
     }
 
-    @command('fossil.pushTo', { repository: true })
+    @command('afm.pushTo', { repository: true })
     async pushTo(repository: Repository): Promise<void> {
         const path = await repository.getPath();
 
@@ -816,7 +816,7 @@ export class CommandCenter {
         repository.push(path.url);
     }
 
-    @command('fossil.showOutput', { repository: true })
+    @command('afm.showOutput', { repository: true })
     showOutput(): void {
         this.outputChannel.show();
     }
@@ -832,27 +832,27 @@ export class CommandCenter {
         }
     }
 
-    @command('fossil.log', { repository: true })
+    @command('afm.log', { repository: true })
     async log(repository: Repository) {
         interaction.presentLogSourcesMenu(this.createLogMenuAPI(repository));
     }
 
-    @command('fossil.logBranch', { repository: true })
+    @command('afm.logBranch', { repository: true })
     async logBranch(repository: Repository) {
         interaction.presentLogMenu(CommitSources.Branch, { }, this.createLogMenuAPI(repository));
     }
 
-    @command('fossil.logDefault', { repository: true })
+    @command('afm.logDefault', { repository: true })
     async logDefault(repository: Repository) {
         interaction.presentLogMenu(CommitSources.Branch, { }, this.createLogMenuAPI(repository));
     }
 
-    @command('fossil.logRepo', { repository: true })
+    @command('afm.logRepo', { repository: true })
     async logRepo(repository: Repository) {
         interaction.presentLogMenu(CommitSources.Repo, {}, this.createLogMenuAPI(repository));
     }
 
-    @command('fossil.fileLog')
+    @command('afm.fileLog')
     async fileLog(uri?: Uri) {
         if (!uri) {
             if (window.activeTextEditor) {
@@ -883,8 +883,8 @@ export class CommandCenter {
 
     private async diffFile(repository: Repository, rev1: string, rev2: string, file: IFileStatus) {
         const uri = repository.toUri(file.path);
-        const left = uri.with({ scheme: 'fossil', query: rev1 });
-        const right = uri.with({ scheme: 'fossil', query: rev2 });
+        const left = uri.with({ scheme: 'afm', query: rev1 });
+        const right = uri.with({ scheme: 'afm', query: rev2 });
         const baseName = path.basename(uri.fsPath);
         const title = `${baseName} (#${rev1} vs. ${rev2})`;
 
@@ -894,7 +894,7 @@ export class CommandCenter {
     }
 
     private async diff(commit: Commit, uri: Uri) {
-        const left = uri.with({ scheme: 'fossil', query: commit.hash });
+        const left = uri.with({ scheme: 'afm', query: commit.hash });
         const right = uri;
         const baseName = path.basename(uri.fsPath);
         const title = `${baseName} (#${commit.revision} vs. local)`;
@@ -957,7 +957,7 @@ export class CommandCenter {
             return undefined;
         }
 
-        if (uri.scheme === 'fossil') {
+        if (uri.scheme === 'afm') {
             uri = uri.with({ scheme: 'file' });
         }
 
@@ -986,7 +986,7 @@ export class CommandCenter {
     //         const repository = this.model.getRepository(resource);
 
     //         if (!repository) {
-    //             console.warn('Could not find fossil repository for ', resource);
+    //             console.warn('Could not find afm repository for ', resource);
     //             return result;
     //         }
 

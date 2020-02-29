@@ -36,8 +36,8 @@ export class FossilContentProvider {
         this.disposables.push(
             model.onDidChangeRepository(this.eventuallyFireChangeEvents, this),
             model.onDidChangeOriginalResource(this.onDidChangeOriginalResource, this),
-            workspace.registerTextDocumentContentProvider('fossil', this),
-            workspace.registerTextDocumentContentProvider('fossil-original', this)
+            workspace.registerTextDocumentContentProvider('afm', this),
+            workspace.registerTextDocumentContentProvider('afm-original', this)
         );
 
         setInterval(() => this.cleanup(), FIVE_MINUTES);
@@ -97,8 +97,8 @@ export class FossilContentProvider {
 
         this.cache[cacheKey] = cacheValue;
 
-        if (uri.scheme === 'fossil-original') {
-            uri = uri.with({ scheme: 'fossil', path: uri.query });
+        if (uri.scheme === 'afm-original') {
+            uri = uri.with({ scheme: 'afm', path: uri.query });
         }
 
         let { path } = fromFossilUri(uri);

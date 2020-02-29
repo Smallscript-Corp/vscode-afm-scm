@@ -11,7 +11,7 @@ import { dirname } from 'path';
 import * as fs from 'fs';
 
 // export function log(...args: any[]): void {
-//     console.log.apply(console, ['fossil:', ...args]);
+//     console.log.apply(console, ['afm:', ...args]);
 // }
 
 export interface IDisposable {

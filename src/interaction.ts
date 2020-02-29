@@ -8,7 +8,7 @@ import * as nls from "vscode-nls";
 import * as path from "path";
 import * as os from "os";
 import { window, QuickPickItem, workspace, ViewColumn, Uri } from "vscode";
-import { FossilUndoDetails, Path, Ref, RefType, Commit, LogEntryOptions, CommitDetails, IFileStatus } from "./fossilBase";
+import { AfmUndoDetails, Path, Ref, RefType, Commit, LogEntryOptions, CommitDetails, IFileStatus } from "./afmBase";
 import { humanise } from "./humanise";
 import { Repository, LogEntriesOptions } from "./repository";
 const localize = nls.loadMessageBundle();
@@ -56,11 +56,11 @@ export namespace interaction {
     }
 
     export function statusCloning(clonePromise: Promise<any>) {
-        return window.setStatusBarMessage(localize('cloning', "Cloning fossil repository..."), clonePromise);
+        return window.setStatusBarMessage(localize('cloning', "Cloning afm repository..."), clonePromise);
     }
 
     // export function informFossilNotSupported(this: void) {
-    //     return window.showInformationMessage(localize('disabled', "Fossil is either disabled or not supported in this workspace"));
+    //     return window.showInformationMessage(localize('disabled', "Afm is either disabled or not supported in this workspace"));
     // }
 
     export function informNoChangesToCommit(this: void) {
@@ -160,15 +160,15 @@ export namespace interaction {
             .filter(line => !!line)[0];
 
         message = hint
-            ? localize('fossil error details', "Fossil: {0}", hint)
-            : localize('fossil error', "Fossil error");
+            ? localize('afm error details', "Afm: {0}", hint)
+            : localize('afm error', "Afm error");
 
         if (!message) {
             console.error(err);
             return false;
         }
 
-        const openOutputChannelChoice = localize('open fossil log', "Open Fossil Log");
+        const openOutputChannelChoice = localize('open afm log', "Open Afm Log");
         const choice = await window.showErrorMessage(message, openOutputChannelChoice);
         return choice === openOutputChannelChoice;
     }
@@ -189,7 +189,7 @@ export namespace interaction {
     }
 
     export async function inputPrompt(msg: string): Promise<string | undefined> {
-        const title = 'Fossil Request'
+        const title = 'Afm Request'
         const panel = window.createWebviewPanel('inputPrompt', title, ViewColumn.One);
         panel.webview.html = `<!DOCTYPE html>
         <html lang="en">
@@ -215,7 +215,7 @@ export namespace interaction {
 
     export async function inputRepoName(this: void): Promise<string | undefined> {
         const name = await window.showInputBox({
-            prompt: localize('repourl', "Repository Name (should end with '.fossil')"),
+            prompt: localize('repourl', "Repository Name (should end with '.afr')"),
             ignoreFocusOut: true
         });
         return name;
@@ -414,10 +414,10 @@ export namespace interaction {
     }
 
     export function warnUnsavedChanges(msg: string) {
-        window.showWarningMessage(localize('unsaved changes', `Fossil: ${msg}`));
+        window.showWarningMessage(localize('unsaved changes', `Afm: ${msg}`));
     }
 
-    export async function confirmUndo({ revision, kind }: FossilUndoDetails) {
+    export async function confirmUndo({ revision, kind }: AfmUndoDetails) {
         // prompt
         console.log('confirmUndo with args' + revision + kind);
         const undo = "Undo";

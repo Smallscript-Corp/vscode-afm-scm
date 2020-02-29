@@ -2,7 +2,10 @@ node_modules
 out*/**
 *.vsix
 *.xcf
+*.afr
+.afws
 images/production
 test/sandbox
 resources/icons/*-dark
 resources/icons/*-light
+package-lock.json

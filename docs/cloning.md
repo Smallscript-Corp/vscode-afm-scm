@@ -1,11 +1,11 @@
-# Cloning with Fossil in VS Code
+# Cloning with Afm in VS Code
 
 ![Commands](/images/fossil-commands.png)
 
 Cloning is possible from the fossil extension through the command palette
-(Ctrl-Shift-P). Search for `Fossil: Clone`.
+(Ctrl-Shift-P). Search for `Afm: Clone`.
 
-### Fossil Repository
+### Afm Repository
 You'll first be prompted to enter the repository URI. Enter the entire
 URI, including the scheme (ex. `http://` , `file://` , `https://` , etc)
 
@@ -41,10 +41,10 @@ cloning process.
 ### Input Prompts
 Various prompts may come up while cloning.
 If these prompts are unclear then abort by hitting `Esc` and run your
-`fossil clone` command from the built-in terminal (<code>Ctrl+`</code>).
+`afm clone` command from the built-in terminal (<code>Ctrl+`</code>).
 
 Most notably this rather ugly prompt about SSL failure
 can be read about on the
-[Fossil SSL Certificate](https://fossil-scm.org/home/doc/trunk/www/ssl.wiki#certs)
+[Afm SSL Certificate](https://afm-scm.org/home/doc/trunk/www/ssl.wiki#certs)
 wikipage:
 ![fossil-ssl-fail](/images/fossil-ssl-fail.png)

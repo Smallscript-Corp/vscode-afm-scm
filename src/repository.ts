@@ -1,6 +1,6 @@
 
 import { Uri, Command, EventEmitter, Event, scm, SourceControl, SourceControlResourceState, SourceControlResourceDecorations, Disposable, ProgressLocation, window, workspace, commands } from 'vscode';
-import { Repository as BaseRepository, Ref, Commit, FossilError, IRepoStatus, PullOptions, FossilErrorCodes, IMergeResult, CommitDetails, LogEntryRepositoryOptions, FossilUndoDetails } from './fossilBase';
+import { Repository as BaseRepository, Ref, Commit, AfmError, IRepoStatus, PullOptions, AfmErrorCodes, IMergeResult, CommitDetails, LogEntryRepositoryOptions, AfmUndoDetails } from './afmBase';
 import { anyEvent, filterEvent, eventToPromise, dispose, IDisposable, delay, partition } from './util';
 import { memoize, throttle, debounce } from './decorators';
 import { StatusBarCommands } from './statusbar';
@@ -9,7 +9,7 @@ import typedConfig from "./config";
 import * as path from 'path';
 import * as nls from 'vscode-nls';
 import { ResourceGroup, createEmptyStatusGroups, UntrackedGroup, WorkingDirectoryGroup, StagingGroup, ConflictGroup, MergeGroup, IStatusGroups, groupStatuses, IGroupStatusesParams } from './resourceGroups';
-import { Path } from './fossilBase';
+import { Path } from './afmBase';
 import { AutoInOutState, AutoInOutStatuses, AutoIncomingOutgoing } from './autoinout';
 import { interaction, PushCreatesNewHeadAction } from './interaction';
 import { toFossilUri } from './uri';
@@ -58,7 +58,7 @@ export class Resource implements SourceControlResourceState {
     @memoize
     get command(): Command {
         return {
-            command: 'fossil.openResource',
+            command: 'afm.openResource',
             title: localize('open', "Open"),
             arguments: [this]
         };
@@ -369,16 +369,16 @@ export class Repository implements IDisposable {
 
         const onWorkspaceChange = anyEvent(fsWatcher.onDidChange, fsWatcher.onDidCreate, fsWatcher.onDidDelete);
         const onRepositoryChange = filterEvent(onWorkspaceChange, uri => !/^\.\./.test(path.relative(repository.root, uri.fsPath)));
-        const onRelevantRepositoryChange = filterEvent(onRepositoryChange, uri => !/\/\.hg\/(\w?lock.*|.*\.log([-\.]\w+)?)$/.test(uri.path));
+        const onRelevantRepositoryChange = filterEvent(onRepositoryChange, uri => !/\/\.afws\/(\w?lock.*|.*\.log([-\.]\w+)?)$/.test(uri.path));
         onRelevantRepositoryChange(this.onFSChange, this, this.disposables);
 
-        const onRelevantHgChange = filterEvent(onRelevantRepositoryChange, uri => /\/\.hg\//.test(uri.path));
+        const onRelevantHgChange = filterEvent(onRelevantRepositoryChange, uri => /\/\.afws\//.test(uri.path));
         onRelevantHgChange(this._onDidChangeRepository.fire, this._onDidChangeRepository, this.disposables);
 
-        this._sourceControl = scm.createSourceControl('fossil', 'Fossil', Uri.file(repository.root));
+        this._sourceControl = scm.createSourceControl('afm', 'Afm', Uri.file(repository.root));
         this.disposables.push(this._sourceControl);
 
-        this._sourceControl.acceptInputCommand = { command: 'fossil.commitWithInput', title: localize('commit', "Commit") };
+        this._sourceControl.acceptInputCommand = { command: 'afm.commitWithInput', title: localize('commit', "Commit") };
         this._sourceControl.quickDiffProvider = this;
 
         const [groups, disposables] = createEmptyStatusGroups(this._sourceControl);
@@ -404,7 +404,7 @@ export class Repository implements IDisposable {
         }
 
         // As a mitigation for extensions like ESLint showing warnings and errors
-        // for hg URIs, let's change the file extension of these uris to .hg.
+        // for .afws URIs, let's change the file extension of these uris to .afln.
         return toFossilUri(uri);
     }
 
@@ -687,10 +687,10 @@ export class Repository implements IDisposable {
 
     @throttle
     async branch(name: string, opts?: { allowBranchReuse: boolean }): Promise<void> {
-        const hgOpts = opts && {
+        const afmOpts = opts && {
             force: opts && opts.allowBranchReuse
         };
-        await this.run(Operation.Branch, () => this.repository.branch(name, hgOpts));
+        await this.run(Operation.Branch, () => this.repository.branch(name, afmOpts));
     }
 
     @throttle
@@ -709,7 +709,7 @@ export class Repository implements IDisposable {
     }
 
     @throttle
-    async undo(dryRun: boolean, dryRunDetails?: FossilUndoDetails): Promise<FossilUndoDetails> {
+    async undo(dryRun: boolean, dryRunDetails?: AfmUndoDetails): Promise<AfmUndoDetails> {
         const op = dryRun ? Operation.UndoDryRun : Operation.Undo;
         console.log('Running undo with dryrun ' + dryRun)
         const undo = await this.run(op, () => this.repository.undo(dryRun));
@@ -746,7 +746,7 @@ export class Repository implements IDisposable {
 
             this.changeAutoInoutState({
                 status: AutoInOutStatuses.Error,
-                error: ((err.stderr || "").replace(/^abort:\s*/, '') || err.fossilErrorCode || err.message).trim(),
+                error: ((err.stderr || "").replace(/^abort:\s*/, '') || err.afmErrorCode || err.message).trim(),
             })
             throw err;
         }
@@ -772,10 +772,10 @@ export class Repository implements IDisposable {
                 await this.repository.push();
             }
             catch (e) {
-                if (e instanceof FossilError && e.fossilErrorCode === FossilErrorCodes.PushCreatesNewRemoteHead) {
+                if (e instanceof AfmError && e.afmErrorCode === AfmErrorCodes.PushCreatesNewRemoteHead) {
                     const action = await interaction.warnPushCreatesNewHead();
                     if (action === PushCreatesNewHeadAction.Pull) {
-                        commands.executeCommand("fossil.pull");
+                        commands.executeCommand("afm.pull");
                     }
                     return;
                 }
@@ -792,8 +792,8 @@ export class Repository implements IDisposable {
                 return await this.repository.merge(revQuery)
             }
             catch (e) {
-                if (e instanceof FossilError && e.fossilErrorCode === FossilErrorCodes.UntrackedFilesDiffer && e.hgFilenames) {
-                    e.hgFilenames = e.hgFilenames.map(filename => this.mapRepositoryRelativePathToWorkspaceRelativePath(filename));
+                if (e instanceof AfmError && e.afmErrorCode === AfmErrorCodes.UntrackedFilesDiffer && e.afmFilenames) {
+                    e.afmFilenames = e.afmFilenames.map(filename => this.mapRepositoryRelativePathToWorkspaceRelativePath(filename));
                 }
                 throw e;
             }
@@ -818,12 +818,12 @@ export class Repository implements IDisposable {
                 return await this.repository.cat(relativePath, ref)
             }
             catch (e) {
-                if (e && e instanceof FossilError && e.fossilErrorCode === FossilErrorCodes.NoSuchFile) {
+                if (e && e instanceof AfmError && e.afmErrorCode === AfmErrorCodes.NoSuchFile) {
                     return '';
                 }
 
                 if (e.exitCode !== 0) {
-                    throw new FossilError({
+                    throw new AfmError({
                         message: localize('cantshow', "Could not show object"),
                         exitCode: e.exitCode
                     });
@@ -853,7 +853,7 @@ export class Repository implements IDisposable {
                 return result;
             }
             catch (err) {
-                if (err.fossilErrorCode === FossilErrorCodes.NotAFossilRepository) {
+                if (err.afmErrorCode === AfmErrorCodes.NotAFossilRepository) {
                     this.state = RepositoryState.Disposed;
                 }
 

@@ -83,7 +83,7 @@ export class FossilFinder {
     public async find(hint?: string): Promise<IFossil> {
         const first = hint ? this.findSpecificFossil(hint) : Promise.reject<IFossil>(null);
 
-        return first.then(undefined, () => this.findSpecificFossil('fossil'));
+        return first.then(undefined, () => this.findSpecificFossil('afm'));
     }
 
     private parseVersion(raw: string): string {
@@ -169,34 +169,34 @@ export async function exec(child: cp.ChildProcess, no_err_check?: boolean): Prom
     return { exitCode, stdout, stderr };
 }
 
-export interface IFossilErrorData {
+export interface IAfmErrorData {
     error?: Error;
     message?: string;
     stdout?: string;
     stderr?: string;
     exitCode?: number;
-    fossilErrorCode?: string;
-    fossilCommand?: string;
+    afmErrorCode?: string;
+    afmCommand?: string;
 }
 
-export class FossilUndoDetails {
+export class AfmUndoDetails {
     revision: number;
     kind: string;
 }
 
-export class FossilError {
+export class AfmError {
 
     error?: Error;
     message: string;
     stdout?: string;
     stderr?: string;
     exitCode?: number;
-    fossilErrorCode?: string;
-    fossilCommand?: string;
-    hgBranches?: string;
-    hgFilenames?: string[];
+    afmErrorCode?: string;
+    afmCommand?: string;
+    afmBranches?: string;
+    afmFilenames?: string[];
 
-    constructor(data: IFossilErrorData) {
+    constructor(data: IAfmErrorData) {
         if (data.error) {
             this.error = data.error;
             this.message = data.error.message;
@@ -205,19 +205,19 @@ export class FossilError {
             this.error = void 0;
         }
 
-        this.message = this.message || data.message || 'Fossil error';
+        this.message = this.message || data.message || 'Afm error';
         this.stdout = data.stdout;
         this.stderr = data.stderr;
         this.exitCode = data.exitCode;
-        this.fossilErrorCode = data.fossilErrorCode;
-        this.fossilCommand = data.fossilCommand;
+        this.afmErrorCode = data.afmErrorCode;
+        this.afmCommand = data.afmCommand;
     }
 
     toString(): string {
         let result = this.message + ' ' + JSON.stringify({
             exitCode: this.exitCode,
-            fossilErrorCode: this.fossilErrorCode,
-            fossilCommand: this.fossilCommand,
+            afmErrorCode: this.afmErrorCode,
+            afmCommand: this.afmCommand,
             stdout: this.stdout,
             stderr: this.stderr
         }, [], 2);
@@ -238,7 +238,7 @@ export interface IFossilOptions {
     outputChannel: OutputChannel;
 }
 
-export const FossilErrorCodes = {
+export const AfmErrorCodes = {
     AuthenticationFailed: 'AuthenticationFailed',
     NotAFossilRepository: 'NotAFossilRepository',
     UnmergedChanges: 'UnmergedChanges',
@@ -250,7 +250,7 @@ export const FossilErrorCodes = {
     DefaultRepositoryNotConfigured: 'DefaultRepositoryNotConfigured'
 };
 
-export class Fossil {
+export class Afm {
 
     private fossilPath: string;
     private outputChannel: OutputChannel;
@@ -277,7 +277,7 @@ export class Fossil {
 
     async clone(url: string, parentPath: string): Promise<string> {
         const folderName = url.replace(/^.*\//, '') || 'repository';
-        const folderPath = path.join(parentPath, folderName + '.fossil');
+        const folderPath = path.join(parentPath, folderName + '.afr');
 
         await mkdirp(parentPath);
         await this.exec(parentPath, ['clone', url, folderPath]);
@@ -302,9 +302,9 @@ export class Fossil {
             return result
         }
         catch(err){
-            if(err instanceof FossilError &&
-                err.fossilErrorCode !== FossilErrorCodes.NoSuchFile &&
-                err.fossilErrorCode !== FossilErrorCodes.NotAFossilRepository){
+            if(err instanceof AfmError &&
+                err.afmErrorCode !== AfmErrorCodes.NoSuchFile &&
+                err.afmErrorCode !== AfmErrorCodes.NotAFossilRepository){
                 const openLog = await interaction.errorPromptOpenLog(err)
                 if (openLog) {
                     this.outputChannel.show();
@@ -322,33 +322,33 @@ export class Fossil {
         result = await exec(child, args.includes('cat'));
 
         const durationHR = process.hrtime(startTimeHR);
-        this.log(`fossil ${args.join(' ')}: ${Math.floor(msFromHighResTime(durationHR))}ms\n`);
+        this.log(`afm ${args.join(' ')}: ${Math.floor(msFromHighResTime(durationHR))}ms\n`);
 
         if (result.exitCode) {
-            let fossilErrorCode: string | undefined = void 0;
+            let afmErrorCode: string | undefined = void 0;
 
             if (/Authentication failed/.test(result.stderr)) {
-                fossilErrorCode = FossilErrorCodes.AuthenticationFailed;
+                afmErrorCode = AfmErrorCodes.AuthenticationFailed;
             }
             else if (/not within an open checkout/.test(result.stderr) ||
                      /specify the repository database/.test(result.stderr)) {
-                fossilErrorCode = FossilErrorCodes.NotAFossilRepository;
+                afmErrorCode = AfmErrorCodes.NotAFossilRepository;
             }
             else if (/no such file/.test(result.stderr)) {
-                fossilErrorCode = FossilErrorCodes.NoSuchFile;
+                afmErrorCode = AfmErrorCodes.NoSuchFile;
             }
 
             if (options.logErrors !== false && result.stderr) {
                 this.log(`${result.stderr}\n`);
             }
 
-            return Promise.reject<IExecutionResult>(new FossilError({
-                message: 'Failed to execute fossil',
+            return Promise.reject<IExecutionResult>(new AfmError({
+                message: 'Failed to execute afm',
                 stdout: result.stdout,
                 stderr: result.stderr,
                 exitCode: result.exitCode,
-                fossilErrorCode,
-                fossilCommand: args[0]
+                afmErrorCode,
+                afmCommand: args[0]
             }));
         }
 
@@ -357,7 +357,7 @@ export class Fossil {
 
     spawn(args: string[], options: any = {}): cp.ChildProcess {
         if (!this.fossilPath) {
-            throw new Error('fossil could not be found in the system.');
+            throw new Error('afm could not be found in the system.');
         }
 
         if (!options) {
@@ -405,11 +405,11 @@ export class Repository {
     private status_msg: string = '';
 
     constructor(
-        private _fossil: Fossil,
+        private _fossil: Afm,
         private repositoryRoot: string
     ) { }
 
-    get fossil(): Fossil {
+    get afm(): Afm {
         return this._fossil;
     }
 
@@ -418,7 +418,7 @@ export class Repository {
     }
 
     async exec(args: string[], options: any = {}): Promise<IExecutionResult> {
-        return await this.fossil.exec(this.repositoryRoot, args, options);
+        return await this.afm.exec(this.repositoryRoot, args, options);
     }
 
     async config(scope: string, key: string, value: any, options: any): Promise<string> {
@@ -464,7 +464,7 @@ export class Repository {
             return result.stdout + result.stderr;
         }
         catch (err) {
-            if(err instanceof FossilError && err.stderr){
+            if(err instanceof AfmError && err.stderr){
                 return err.stdout + err.stderr
             }
             else{
@@ -509,7 +509,7 @@ export class Repository {
         }
         catch (err) {
             if (/partial commit of a merge/.test(err.stderr)) {
-                err.fossilErrorCode = FossilErrorCodes.UnmergedChanges;
+                err.afmErrorCode = AfmErrorCodes.UnmergedChanges;
                 throw err;
             }
 
@@ -532,8 +532,8 @@ export class Repository {
             await this.exec(args);
         }
         catch (err) {
-            if (err instanceof FossilError && /a branch of the same name already exists/.test(err.stderr || '')) {
-                err.fossilErrorCode = FossilErrorCodes.BranchAlreadyExists;
+            if (err instanceof AfmError && /a branch of the same name already exists/.test(err.stderr || '')) {
+                err.afmErrorCode = AfmErrorCodes.BranchAlreadyExists;
             }
 
             throw err;
@@ -565,12 +565,12 @@ export class Repository {
     }
 
     async ignore(paths: string[]): Promise<void> {
-        const ignore_file = this.repositoryRoot + '/.fossil-settings/ignore-glob'
+        const ignore_file = this.repositoryRoot + '/.afm-settings/ignore-glob'
         if(existsSync(ignore_file)){
             appendFileSync(ignore_file, paths.join('\n') + '\n' )
         }
         else{
-            mkdirp(this.repositoryRoot + '/.fossil-settings/')
+            mkdirp(this.repositoryRoot + '/.afm-settings/')
             writeFileSync(ignore_file, paths.join('\n')+ '\n');
             this.add([ignore_file])
         }
@@ -578,7 +578,7 @@ export class Repository {
         window.showTextDocument(document);
     }
 
-    async undo(dryRun?: boolean): Promise<FossilUndoDetails> {
+    async undo(dryRun?: boolean): Promise<AfmUndoDetails> {
         const args = ['undo'];
 
         if (dryRun) {
@@ -590,12 +590,12 @@ export class Repository {
             const match = /back to revision (\d+) \(undo (.*)\)/.exec(result.stdout);
 
             if (!match) {
-                throw new FossilError({
+                throw new AfmError({
                     message: `Unexpected undo result: ${JSON.stringify(result.stdout)}`,
                     stdout: result.stdout,
                     stderr: result.stderr,
                     exitCode: result.exitCode,
-                    fossilCommand: "undo"
+                    afmCommand: "undo"
                 })
             }
 
@@ -607,8 +607,8 @@ export class Repository {
             };
         }
         catch (error) {
-            if (error instanceof FossilError && /nothing to undo/.test(error.stderr || '')) {
-                error.fossilErrorCode = FossilErrorCodes.NoUndoInformationAvailable;
+            if (error instanceof AfmError && /nothing to undo/.test(error.stderr || '')) {
+                error.afmErrorCode = AfmErrorCodes.NoUndoInformationAvailable;
             }
             throw error;
         }
@@ -640,7 +640,7 @@ export class Repository {
             await this.exec(args);
         }
         catch (err) {
-            // In case there are merge conflicts to be resolved, fossil reset will output
+            // In case there are merge conflicts to be resolved, afm reset will output
             // some "needs merge" data. We try to get around that.
             if (/([^:]+: needs merge\n)+/m.test(err.stdout || '')) {
                 return;
@@ -673,7 +673,7 @@ export class Repository {
         }
         catch (err) {
             if (/would fork/.test(err.stderr || '')) {
-                err.fossilErrorCode = FossilErrorCodes.PushCreatesNewRemoteHead;
+                err.afmErrorCode = AfmErrorCodes.PushCreatesNewRemoteHead;
             }
 
             throw err;
@@ -700,12 +700,12 @@ export class Repository {
             }
         }
         catch (e) {
-            if (e instanceof FossilError && e.stderr && e.stderr.match(/untracked files in working directory differ/)) {
-                e.fossilErrorCode = FossilErrorCodes.UntrackedFilesDiffer;
-                e.hgFilenames = this.parseUntrackedFilenames(e.stderr);
+            if (e instanceof AfmError && e.stderr && e.stderr.match(/untracked files in working directory differ/)) {
+                e.afmErrorCode = AfmErrorCodes.UntrackedFilesDiffer;
+                e.afmFilenames = this.parseUntrackedFilenames(e.stderr);
             }
 
-            if (e instanceof FossilError && e.exitCode === 1) {
+            if (e instanceof AfmError && e.exitCode === 1) {
                 const match = (e.stdout || "").match(/(\d+) files unresolved/);
                 if (match) {
                     return {
@@ -853,9 +853,9 @@ export class Repository {
             .filter(line => !!line)
             .map((line: string): Commit | null => {
                 const parts = line.split(":");
-                const [revision, hash, hgDate, author, branch, tabDelimBookmarks] = parts;
+                const [revision, hash, afmDate, author, branch, tabDelimBookmarks] = parts;
                 const message = parts.slice(6).join(":");
-                const [unixDateSeconds, _] = hgDate.split(' ').map(part => parseFloat(part));
+                const [unixDateSeconds, _] = afmDate.split(' ').map(part => parseFloat(part));
                 return {
                     revision: parseInt(revision),
                     date: new Date(unixDateSeconds * 1e3),

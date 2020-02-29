@@ -1,12 +1,12 @@
 # Overview
 
-## Integrated Fossil source control
+## Integrated Afm source control
 
 ### Prerequisites
 
-> This extension leverages your machine's Fossil installation,
+> This extension leverages your machine's Afm installation,
 so you need to
-[install Fossil](https://www.fossil-scm.org/fossil/doc/trunk/www/quickstart.wiki)
+[install Afm](https://www.afm-scm.org/fossil/doc/trunk/www/quickstart.wiki)
 first. Also read the [cloning](/docs/cloning.md) documentation for info
 about cloning from the extension.
 
@@ -14,7 +14,7 @@ about cloning from the extension.
 
 -----
 
-![Fossil](/images/fossil.png)
+![Afm](/images/fossil.png)
 
 # Features
 
@@ -46,9 +46,9 @@ about cloning from the extension.
 ## Initialize a new repo
 
 ![Init a repo](images/init.gif)
-__TODO__: update gif for fossil
+__TODO__: update gif for afm
 
-  * Just click the Fossil icon from the source control title area
+  * Just click the Afm icon from the source control title area
     * Follow prompts
 
 ## Update to a branch/tag
@@ -60,54 +60,54 @@ __TODO__: update gif for fossil
 
 # Settings
 
-`fossil.enabled { boolean }`
+`afm.enabled { boolean }`
 
-  * Enables Fossil as a source control manager in VS Code.
+  * Enables Afm as a source control manager in VS Code.
 
-`fossil.autoUpdate { boolean }`
+`afm.autoUpdate { boolean }`
 
   * Enables automatic update of working directory to branch head after
-  pulling (equivalent to `fossil update`)
+  pulling (equivalent to `afm update`)
   *  `"true"` &mdash; enabled
   *  `"false"` &mdash; disabled, manual update/merge required
 
-`fossil.autoRefresh { boolean }`
+`afm.autoRefresh { boolean }`
 
   * Enables automatic refreshing of Source Control tab and badge counter
   when files within the project change:
   `"true"` &mdash; enabled
   `"false"` &mdash; disabled, manual refresh still available.
 
-`fossil.path { string / null }`
+`afm.path { string / null }`
 
-  * Specifies an explicit `fossil` file path to use.
-  * This should only be used if `fossil` cannot be found automatically.
-  * The default behaviour is to search for `fossil` in commonly-known
+  * Specifies an explicit `afm` file path to use.
+  * This should only be used if `afm` cannot be found automatically.
+  * The default behaviour is to search for `afm` in commonly-known
     install locations and on the PATH.
 
 # Troubleshooting
 
-In general, Fossil designers maintain an abundance of
-[documentation](https://fossil-scm.org/home/doc/trunk/www/permutedindex.html).
+In general, Afm designers maintain an abundance of
+[documentation](https://afm-scm.org/home/doc/trunk/www/permutedindex.html).
 Reference that documentation as much as possible.
 
 | Issue | Resolution
 --------|----------------------------------------------------------------
-| Unknown certificate authority | Read the [Fossil SSL Documentation](https://fossil-scm.org/home/doc/trunk/www/ssl.wiki#certs) to update fossil with the correct CA |
-| inputBox prompt difficult to read | Run the same fossil command on the built-in terminal (<code>Ctrl+`</code>). Unfortunately VS Code strips newlines and tabs from inputBox prompts. |
+| Unknown certificate authority | Read the [Afm SSL Documentation](https://afm-scm.org/home/doc/trunk/www/ssl.wiki#certs) to update fossil with the correct CA |
+| inputBox prompt difficult to read | Run the same afm command on the built-in terminal (<code>Ctrl+`</code>). Unfortunately VS Code strips newlines and tabs from inputBox prompts. |
 
 
 # Feedback & Contributing
 
 * Please report any bugs, suggestions or documentation requests via the
-[Github issues](https://github.com/koog1000/vscode-fossil/issues)
+[Github issues](https://github.com/Smallscript-Corp/vscode-afm-scm/issues)
 (_yes_, I see the irony).
 * Feel free to submit
-[pull requests](https://github.com/koog1000/vscode-fossil/pulls).
+[pull requests](https://github.com/Smallscript-Corp/vscode-afm-scm/pulls).
 
 
 # Building Extension from Source
-**Note:** The official way to install vscode-fossil is from within
+**Note:** The official way to install vscode-afm is from within
 [VSCode Extensions](https://code.visualstudio.com/docs/editor/extension-gallery#_browse-for-extensions)
 
 ### Dependencies
@@ -122,5 +122,5 @@ on your computer and add it to your `$PATH`.
 
 # Acknowledgements
 
-[Ben Crowl](https://github.com/mrcrowl),
+[David Simmons](https://github.com/smallscript),[Ben Crowl](https://github.com/mrcrowl),
 [ajansveld](https://github.com/ajansveld), [hoffmael](https://github.com/hoffmael), [nioh-wiki](https://github.com/nioh-wiki), [joaomoreno](https://github.com/joaomoreno), [nsgundy](https://github.com/nsgundy)

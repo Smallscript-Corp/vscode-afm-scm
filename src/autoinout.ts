@@ -5,7 +5,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { workspace, Disposable } from 'vscode';
-import { FossilErrorCodes, FossilError } from "./fossilBase";
+import { AfmErrorCodes, AfmError } from "./afmBase";
 import { throttle } from './decorators';
 import typedConfig from "./config";
 import { Repository, Operation } from './repository';
@@ -78,9 +78,9 @@ export class AutoIncomingOutgoing {
             await this.repository.changeInoutAfterDelay();
         }
         catch (err) {
-            if (err instanceof FossilError && (
-                err.fossilErrorCode === FossilErrorCodes.AuthenticationFailed ||
-                err.fossilErrorCode === FossilErrorCodes.NotAFossilRepository )) {
+            if (err instanceof AfmError && (
+                err.afmErrorCode === AfmErrorCodes.AuthenticationFailed ||
+                err.afmErrorCode === AfmErrorCodes.NotAFossilRepository )) {
                 this.disable();
             }
         }
