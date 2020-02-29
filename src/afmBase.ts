@@ -565,12 +565,12 @@ export class Repository {
     }
 
     async ignore(paths: string[]): Promise<void> {
-        const ignore_file = this.repositoryRoot + '/.afm-settings/ignore-glob'
+        const ignore_file = this.repositoryRoot + '/.af/ignore-glob'
         if(existsSync(ignore_file)){
             appendFileSync(ignore_file, paths.join('\n') + '\n' )
         }
         else{
-            mkdirp(this.repositoryRoot + '/.afm-settings/')
+            mkdirp(this.repositoryRoot + '/.af/')
             writeFileSync(ignore_file, paths.join('\n')+ '\n');
             this.add([ignore_file])
         }
