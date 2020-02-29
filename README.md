@@ -1,20 +1,20 @@
 # Overview
 
-## Integrated Afm source control
+## EdgeS™ integrated `afm-scm` source control
 
 ### Prerequisites
 
-> This extension leverages your machine's Afm installation,
+> This extension leverages your machine's `afm` installation,
 so you need to
-[install Afm](https://www.afm-scm.org/fossil/doc/trunk/www/quickstart.wiki)
-first. Also read the [cloning](/docs/cloning.md) documentation for info
+[install afm-scm](https://www.afm-scm.org/fossil/doc/trunk/www/quickstart.wiki)
+first. Also read the [cloning](docs/cloning.md) documentation for info
 about cloning from the extension.
 
-## WORK IN PROGRESS. PLEASE SUBMIT [ISSUES](https://github.com/koog1000/vscode-fossil/issues) IF YOU FIND THEM.
+## WORK IN PROGRESS. PLEASE SUBMIT [ISSUES](https://github.com/Smallscript-Corp/vscode-afm-scm/issues) IF YOU FIND THEM.
 
 -----
 
-![Afm](/images/fossil.png)
+![afm-scm](images/fossil.png)
 
 # Features
 

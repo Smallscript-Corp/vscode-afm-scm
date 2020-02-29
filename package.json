@@ -1,8 +1,8 @@
 {
   "name": "afm",
   "publisher": "smallscript",
-  "displayName": "Afm",
-  "description": "Integrated Afm source control",
+  "displayName": "afm-scm",
+  "description": "EdgeS™ integrated afm-scm source control",
   "galleryBanner": {
     "color": "#999999",
     "theme": "dark"
@@ -735,7 +735,7 @@
       ]
     },
     "configuration": {
-      "title": "Afm",
+      "title": "afm-scm",
       "properties": {
         "afm.enabled": {
           "type": "boolean",
