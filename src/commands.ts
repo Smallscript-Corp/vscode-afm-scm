@@ -618,7 +618,7 @@ export class CommandCenter {
         await this.commitWithAnyInput(repository);
     }
 
-    @command('afmmmitWithInput', { repository: true })
+    @command('afm.commitWithInput', { repository: true })
     async commitWithInput(repository: Repository): Promise<void> {
         const didCommit = await this.smartCommit(repository, async () => repository.sourceControl.inputBox.value);
 
