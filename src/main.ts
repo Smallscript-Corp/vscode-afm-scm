@@ -25,7 +25,7 @@ async function init(context: ExtensionContext, disposables: Disposable[]): Promi
     const enabled = typedConfig.enabled;
     const pathHint = typedConfig.path;
     const info: IAfm = await findAfm(pathHint, outputChannel);
-    const afm = new Afm({ fossilPath: info.path,
+    const afm = new Afm({ afmPath: info.path,
                                 version: info.version,
                                 enableInstrumentation: enabled,
                                 outputChannel: outputChannel });

@@ -23,6 +23,8 @@
   "keywords": [
     "afm-scm",
     "afm",
+    "EdgeShell",
+    "EdgeS",
     "source",
     "scm"
   ],
@@ -519,8 +521,13 @@
           "when": "config.afm.enabled && scmProvider == afm"
         },
         {
+          "command": "afm.openui",
+          "group": "6_tools",
+          "when": "config.afm.enabled && afmOpenRepositoryCount != 0"
+        },
+        {
           "command": "afm.showOutput",
-          "group": "6_output",
+          "group": "7_output",
           "when": "config.afm.enabled && scmProvider == afm"
         }
       ],

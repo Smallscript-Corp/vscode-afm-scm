@@ -198,7 +198,8 @@ export const enum Operation {
     Remove = 1 << 20,
     Merge = 1 << 21,
     Close = 1 << 25,
-    Ignore = 1 << 26
+    Ignore = 1 << 26,
+    OpenUI = 1 << 27
 }
 
 function isReadOnly(operation: Operation): boolean {
@@ -375,7 +376,7 @@ export class Repository implements IDisposable {
         const onRelevantHgChange = filterEvent(onRelevantRepositoryChange, uri => /\/\.afws\//.test(uri.path));
         onRelevantHgChange(this._onDidChangeRepository.fire, this._onDidChangeRepository, this.disposables);
 
-        this._sourceControl = scm.createSourceControl('afm', 'Afm', Uri.file(repository.root));
+        this._sourceControl = scm.createSourceControl('afm', 'EdgeS Afm-Scm', Uri.file(repository.root));
         this.disposables.push(this._sourceControl);
 
         this._sourceControl.acceptInputCommand = { command: 'afm.commitWithInput', title: localize('commit', "Commit") };
@@ -682,6 +683,12 @@ export class Repository implements IDisposable {
     async clean(): Promise<void> {
         await this.run(Operation.Clean, async () => {
             this.repository.clean();
+        });
+    }
+    @throttle
+    async openui(): Promise<void> {
+        await this.run(Operation.OpenUI, async () => {
+            this.repository.openui();
         });
     }
 

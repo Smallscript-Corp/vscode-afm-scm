@@ -231,7 +231,7 @@ export class AfmError {
 }
 
 export interface IAfmOptions {
-    fossilPath: string;
+    afmPath: string;
     version: string;
     env?: any;
     enableInstrumentation: boolean;
@@ -252,7 +252,7 @@ export const AfmErrorCodes = {
 
 export class Afm {
 
-    private fossilPath: string;
+    private afmPath: string;
     private outputChannel: OutputChannel;
     private disposables: Disposable[] = [];
     private openRepository: Repository | undefined;
@@ -261,7 +261,7 @@ export class Afm {
     get onOutput(): Event<string> { return this._onOutput.event; }
 
     constructor(options: IAfmOptions) {
-        this.fossilPath = options.fossilPath;
+        this.afmPath = options.afmPath;
         this.outputChannel = options.outputChannel;
     }
 
@@ -319,7 +319,7 @@ export class Afm {
 
         let result: IExecutionResult;
         const child = this.spawn(args, options);
-        result = await exec(child, args.includes('cat'));
+        result = await exec(child, args.includes('cat')/*?no-err-check*/);
 
         const durationHR = process.hrtime(startTimeHR);
         this.log(`afm ${args.join(' ')}: ${Math.floor(msFromHighResTime(durationHR))}ms\n`);
@@ -356,7 +356,7 @@ export class Afm {
     }
 
     spawn(args: string[], options: any = {}): cp.ChildProcess {
-        if (!this.fossilPath) {
+        if (!this.afmPath) {
             throw new Error('afm could not be found in the system.');
         }
 
@@ -375,7 +375,7 @@ export class Afm {
             LANG: 'en_US.UTF-8'
         }
 
-        return cp.spawn(this.fossilPath, args, options);
+        return cp.spawn(this.afmPath, args, options);
     }
 
     private log(output: string): void {
@@ -562,6 +562,10 @@ export class Repository {
 
     async clean(): Promise<void> {
         this.exec(['clean']);
+    }
+
+    async openui(): Promise<void> {
+        this.exec(['ui']);
     }
 
     async ignore(paths: string[]): Promise<void> {

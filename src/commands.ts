@@ -542,6 +542,11 @@ export class CommandCenter {
         }
     }
 
+    @command('afm.openui', { repository: true })
+    async openui(repository: Repository): Promise<void> {
+        await repository.openui();
+    }
+
     private async smartCommit(repository: Repository, getCommitMessage: () => Promise<string | undefined>, opts?: CommitOptions): Promise<boolean> {
         // validate no conflicts
         const numConflictResources = repository.conflictGroup.resources.length;
