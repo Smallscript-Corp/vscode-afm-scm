@@ -8,11 +8,11 @@
 
 import { Uri } from 'vscode';
 
-export function fromFossilUri(uri: Uri): { path: string} {
+export function fromAfmUri(uri: Uri): { path: string} {
     return JSON.parse(uri.query);
 }
 
-export function toFossilUri(uri: Uri): Uri {
+export function toAfmUri(uri: Uri): Uri {
     return uri.with({
         scheme: 'afm-original',
         path: uri.path,

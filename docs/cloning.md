@@ -10,7 +10,7 @@ You'll first be prompted to enter the repository URI. Enter the entire
 URI, including the scheme (ex. `http://` , `file://` , `https://` , etc)
 
 As an Example:
-![FossilURI](/images/fossil-uri.png)
+![AfmURI](/images/fossil-uri.png)
 
 Hitting `Esc` will abort the cloning process
 

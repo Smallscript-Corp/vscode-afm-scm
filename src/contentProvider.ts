@@ -9,7 +9,7 @@ import { workspace, Uri, Disposable, Event, EventEmitter, window } from 'vscode'
 import { debounce, throttle } from './decorators';
 import { Model, OriginalResourceChangeEvent } from './model';
 import { filterEvent, eventToPromise } from './util';
-import { fromFossilUri, toFossilUri } from './uri';
+import { fromAfmUri, toAfmUri } from './uri';
 
 interface CacheRow {
     uri: Uri;
@@ -23,7 +23,7 @@ interface Cache {
 const THREE_MINUTES = 1000 * 60 * 3;
 const FIVE_MINUTES = 1000 * 60 * 5;
 
-export class FossilContentProvider {
+export class AfmContentProvider {
 
     private _onDidChange = new EventEmitter<Uri>();
     get onDidChange(): Event<Uri> { return this._onDidChange.event; }
@@ -48,7 +48,7 @@ export class FossilContentProvider {
             return;
         }
 
-        this._onDidChange.fire(toFossilUri(uri));
+        this._onDidChange.fire(toAfmUri(uri));
     }
 
     @debounce(1100)
@@ -101,7 +101,7 @@ export class FossilContentProvider {
             uri = uri.with({ scheme: 'afm', path: uri.query });
         }
 
-        let { path } = fromFossilUri(uri);
+        let { path } = fromAfmUri(uri);
 
         try {
             return await repository.show('', path);

@@ -80,7 +80,7 @@ export class AutoIncomingOutgoing {
         catch (err) {
             if (err instanceof AfmError && (
                 err.afmErrorCode === AfmErrorCodes.AuthenticationFailed ||
-                err.afmErrorCode === AfmErrorCodes.NotAFossilRepository )) {
+                err.afmErrorCode === AfmErrorCodes.NotAnAfmRepository )) {
                 this.disable();
             }
         }

@@ -7,10 +7,10 @@
 // based on https://github.com/Microsoft/vscode/commit/41f0ff15d7327da30fdae73aa04ca570ce34fa0a
 
 import { ExtensionContext, window, Disposable, commands, OutputChannel } from 'vscode';
-import { FossilFinder, Afm, IFossil } from './afmBase';
+import { AfmFinder, Afm, IAfm } from './afmBase';
 import { Model } from './model';
 import { CommandCenter } from './commands';
-import { FossilContentProvider } from './contentProvider';
+import { AfmContentProvider } from './contentProvider';
 import * as nls from 'vscode-nls';
 import typedConfig from './config';
 
@@ -24,7 +24,7 @@ async function init(context: ExtensionContext, disposables: Disposable[]): Promi
 
     const enabled = typedConfig.enabled;
     const pathHint = typedConfig.path;
-    const info: IFossil = await findFossil(pathHint, outputChannel);
+    const info: IAfm = await findAfm(pathHint, outputChannel);
     const afm = new Afm({ fossilPath: info.path,
                                 version: info.version,
                                 enableInstrumentation: enabled,
@@ -49,18 +49,18 @@ async function init(context: ExtensionContext, disposables: Disposable[]): Promi
 
     disposables.push(
         new CommandCenter(afm, model, outputChannel),
-        new FossilContentProvider(model),
+        new AfmContentProvider(model),
     );
 }
 
-export async function findFossil(pathHint: string | undefined, outputChannel: OutputChannel): Promise<IFossil> {
+export async function findAfm(pathHint: string | undefined, outputChannel: OutputChannel): Promise<IAfm> {
     const logger = {
         attempts: <string[]>[],
         log: (path: string) => logger.attempts.push(path)
     }
 
     try {
-        const finder = new FossilFinder(logger);
+        const finder = new AfmFinder(logger);
         return await finder.find(pathHint);
     }
     catch (e) {

@@ -16,7 +16,7 @@ import { WorkingDirectoryGroup, StagingGroup, MergeGroup, UntrackedGroup, isReso
 import { interaction, BranchExistsAction, WarnScenario, CommitSources, LogMenuAPI } from "./interaction";
 import { humanise } from "./humanise"
 import { partition } from "./util";
-import { toFossilUri } from "./uri";
+import { toAfmUri } from "./uri";
 
 const localize = nls.loadMessageBundle();
 
@@ -111,7 +111,7 @@ export class CommandCenter {
         switch (resource.status) {
             case Status.RENAMED:
                 if (resource.renameResourceUri) {
-                    return toFossilUri(resource.original);
+                    return toAfmUri(resource.original);
                 }
                 return undefined;
 
@@ -126,7 +126,7 @@ export class CommandCenter {
             case Status.DELETED:
             case Status.MISSING:
             default:
-                return toFossilUri(resource.original);
+                return toAfmUri(resource.original);
         }
     }
 

@@ -59,7 +59,7 @@ export namespace interaction {
         return window.setStatusBarMessage(localize('cloning', "Cloning afm repository..."), clonePromise);
     }
 
-    // export function informFossilNotSupported(this: void) {
+    // export function informAfmNotSupported(this: void) {
     //     return window.showInformationMessage(localize('disabled', "Afm is either disabled or not supported in this workspace"));
     // }
 

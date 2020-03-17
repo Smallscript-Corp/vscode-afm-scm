@@ -11,7 +11,7 @@ import { groupBy, IDisposable, toDisposable, dispose, mkdirp } from "./util";
 import { EventEmitter, Event, workspace, window, Disposable, OutputChannel } from "vscode";
 import { interaction } from './interaction';
 
-export interface IFossil {
+export interface IAfm {
     path: string;
     version: string;
 }
@@ -69,21 +69,21 @@ export interface Path {
     url: string;
 }
 
-export interface FossilFindAttemptLogger {
+export interface AfmFindAttemptLogger {
     log(path: string);
 }
 
-export class FossilFinder {
-    constructor(private logger: FossilFindAttemptLogger) { }
+export class AfmFinder {
+    constructor(private logger: AfmFindAttemptLogger) { }
 
     private logAttempt(path: string) {
         this.logger.log(path);
     }
 
-    public async find(hint?: string): Promise<IFossil> {
-        const first = hint ? this.findSpecificFossil(hint) : Promise.reject<IFossil>(null);
+    public async find(hint?: string): Promise<IAfm> {
+        const first = hint ? this.findSpecificAfm(hint) : Promise.reject<IAfm>(null);
 
-        return first.then(undefined, () => this.findSpecificFossil('afm'));
+        return first.then(undefined, () => this.findSpecificAfm('afm'));
     }
 
     private parseVersion(raw: string): string {
@@ -95,8 +95,8 @@ export class FossilFinder {
         return "?";
     }
 
-    private findSpecificFossil(path: string): Promise<IFossil> {
-        return new Promise<IFossil>((c, e) => {
+    private findSpecificAfm(path: string): Promise<IAfm> {
+        return new Promise<IAfm>((c, e) => {
             const buffers: Buffer[] = [];
             this.logAttempt(path);
             const child = cp.spawn(path, ['version']);
@@ -230,7 +230,7 @@ export class AfmError {
     }
 }
 
-export interface IFossilOptions {
+export interface IAfmOptions {
     fossilPath: string;
     version: string;
     env?: any;
@@ -240,7 +240,7 @@ export interface IFossilOptions {
 
 export const AfmErrorCodes = {
     AuthenticationFailed: 'AuthenticationFailed',
-    NotAFossilRepository: 'NotAFossilRepository',
+    NotAnAfmRepository: 'NotAnAfmRepository',
     UnmergedChanges: 'UnmergedChanges',
     PushCreatesNewRemoteHead: 'PushCreatesNewRemoteHead',
     NoSuchFile: 'NoSuchFile',
@@ -260,7 +260,7 @@ export class Afm {
     private _onOutput = new EventEmitter<string>();
     get onOutput(): Event<string> { return this._onOutput.event; }
 
-    constructor(options: IFossilOptions) {
+    constructor(options: IAfmOptions) {
         this.fossilPath = options.fossilPath;
         this.outputChannel = options.outputChannel;
     }
@@ -304,7 +304,7 @@ export class Afm {
         catch(err){
             if(err instanceof AfmError &&
                 err.afmErrorCode !== AfmErrorCodes.NoSuchFile &&
-                err.afmErrorCode !== AfmErrorCodes.NotAFossilRepository){
+                err.afmErrorCode !== AfmErrorCodes.NotAnAfmRepository){
                 const openLog = await interaction.errorPromptOpenLog(err)
                 if (openLog) {
                     this.outputChannel.show();
@@ -332,7 +332,7 @@ export class Afm {
             }
             else if (/not within an open checkout/.test(result.stderr) ||
                      /specify the repository database/.test(result.stderr)) {
-                afmErrorCode = AfmErrorCodes.NotAFossilRepository;
+                afmErrorCode = AfmErrorCodes.NotAnAfmRepository;
             }
             else if (/no such file/.test(result.stderr)) {
                 afmErrorCode = AfmErrorCodes.NoSuchFile;

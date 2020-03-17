@@ -12,7 +12,7 @@ import { ResourceGroup, createEmptyStatusGroups, UntrackedGroup, WorkingDirector
 import { Path } from './afmBase';
 import { AutoInOutState, AutoInOutStatuses, AutoIncomingOutgoing } from './autoinout';
 import { interaction, PushCreatesNewHeadAction } from './interaction';
-import { toFossilUri } from './uri';
+import { toAfmUri } from './uri';
 
 const timeout = (millis: number) => new Promise(c => setTimeout(c, millis));
 
@@ -405,7 +405,7 @@ export class Repository implements IDisposable {
 
         // As a mitigation for extensions like ESLint showing warnings and errors
         // for .afws URIs, let's change the file extension of these uris to .afln.
-        return toFossilUri(uri);
+        return toAfmUri(uri);
     }
 
     @throttle
@@ -853,7 +853,7 @@ export class Repository implements IDisposable {
                 return result;
             }
             catch (err) {
-                if (err.afmErrorCode === AfmErrorCodes.NotAFossilRepository) {
+                if (err.afmErrorCode === AfmErrorCodes.NotAnAfmRepository) {
                     this.state = RepositoryState.Disposed;
                 }
 

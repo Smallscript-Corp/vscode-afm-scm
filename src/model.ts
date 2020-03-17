@@ -217,7 +217,7 @@ export class Model implements Disposable {
 
             this.open(repository);
         } catch (err) {
-            if (err.afmErrorCode === AfmErrorCodes.NotAFossilRepository) {
+            if (err.afmErrorCode === AfmErrorCodes.NotAnAfmRepository) {
                 return;
             }
 
