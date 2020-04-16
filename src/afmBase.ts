@@ -83,7 +83,7 @@ export class AfmFinder {
     public async find(hint?: string): Promise<IAfm> {
         const first = hint ? this.findSpecificAfm(hint) : Promise.reject<IAfm>(null);
 
-        return first.then(undefined, () => this.findSpecificAfm('afm'));
+        return first.then(undefined, () => this.findSpecificAfm('afm-s'));
     }
 
     private parseVersion(raw: string): string {
@@ -331,7 +331,8 @@ export class Afm {
                 afmErrorCode = AfmErrorCodes.AuthenticationFailed;
             }
             else if (/not within an open checkout/.test(result.stderr) ||
-                     /specify the repository database/.test(result.stderr)) {
+                     /specify the repository database/.test(result.stderr) ||
+                     /file outside of checkout tree/.test(result.stderr)) {
                 afmErrorCode = AfmErrorCodes.NotAnAfmRepository;
             }
             else if (/no such file/.test(result.stderr)) {
@@ -405,12 +406,12 @@ export class Repository {
     private status_msg: string = '';
 
     constructor(
-        private _fossil: Afm,
+        private _afm: Afm,
         private repositoryRoot: string
     ) { }
 
     get afm(): Afm {
-        return this._fossil;
+        return this._afm;
     }
 
     get root(): string {
